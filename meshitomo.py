@@ -104,11 +104,9 @@ def main2():
     cv.grid(row=1, column=1)
     win.mainloop()
 
-#thread_1 = threading.Thread(target=main1)
 thread_2 = threading.Thread(target=main2)
 if __name__ == "__main__":
 
     thread_2.setDaemon(True)
-    #thread_1.start()
     thread_2.start()
     main1()
