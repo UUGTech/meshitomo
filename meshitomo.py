@@ -32,14 +32,12 @@ repeat_list = ["いただきます",
                ]
 
 # テキトーに相槌
-aizuchi_list = ["わかる",
-                "それな",
-                "うける",
+aizuchi_list = [
                 "わかりみが深み",
                 "いやまじでそれ",
-                "それはやばい",
-                "ははは",
-                "あーね"
+                "本当にそれな",
+                "おっしゃる通り",
+                "わかるわー"
                 ]
 
 # 終了コマンド
@@ -55,6 +53,8 @@ finish_list = ["ごちそうさま",
 
 # メシ友さんに喋らせる
 def meshitomo_message(phrase):
+    if os.path.exists(output_mp3):
+            os.remove(output_mp3)
     print("メシ友さん:" + phrase)
     tts=gTTS(text=phrase, lang="ja")
     tts.save(output_mp3)
@@ -68,7 +68,7 @@ def get_audio():
     try:
         with mic as source:
             r.adjust_for_ambient_noise(source)
-            audio = r.listen(source, phrase_time_limit=6)
+            audio = r.listen(source)
             phrase = r.recognize_google(audio, language='ja-JP')
     except sr.WaitTimeoutError:
         meshitomo_message("もう一度お願いします")
@@ -81,9 +81,8 @@ def get_audio():
 # 会話ループ
 def main1():
     loop = False
+    meshitomo_message("メシ友さん起動しました。一緒にご飯を食べましょう")
     while(True):
-        if os.path.exists(output_mp3):
-            os.remove(output_mp3)
         phrase = get_audio()
         if phrase == "":
             continue
